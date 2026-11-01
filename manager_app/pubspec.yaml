@@ -1,0 +1,21 @@
+name: manager_app
+description: "駐警隊充電站監控台 (desktop, zh-TW) - stations, usage logs, points, bans, incidents. Wireframe stage."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
