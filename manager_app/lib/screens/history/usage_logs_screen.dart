@@ -138,7 +138,7 @@ class _UsageLogsScreenState extends State<UsageLogsScreen> {
                         setState(() => _mode = s.first),
                   ),
                   if (_mode == _Mode.date) ...[
-                    const Text(S.dateLabel, style: Tx.muted),
+                    Text(S.dateLabel, style: Tx.muted),
                     YmdDropdown(
                       value: day,
                       first: first,
@@ -174,7 +174,7 @@ class _UsageLogsScreenState extends State<UsageLogsScreen> {
                   )
                 : TableCard(
                     table: DataTable(
-                      headingRowColor: const WidgetStatePropertyAll(Wf.bg),
+                      headingRowColor: WidgetStatePropertyAll(Wf.bg),
                       columns: const [
                         DataColumn(label: Text(S.colSpot)),
                         DataColumn(label: Text(S.colZone)),
@@ -193,7 +193,7 @@ class _UsageLogsScreenState extends State<UsageLogsScreen> {
                             DataCell(Text(l.student.name)),
                             DataCell(Text(fmtDateTime(l.start))),
                             DataCell(l.end == null
-                                ? const StatusBadge(S.inProgress,
+                                ? StatusBadge(S.inProgress,
                                     color: Wf.info)
                                 : Text(fmtDateTime(l.end!))),
                             DataCell(Text(

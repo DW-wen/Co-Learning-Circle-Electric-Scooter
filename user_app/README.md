@@ -1,12 +1,13 @@
 # user_app — Student app (mobile, 繁體中文)
 
-Wireframe stage. See the root `README.md` for run instructions and open questions.
+Styled prototype (light + dark). See the root `README.md` for run instructions and open questions.
 
 ```
 lib/
   main.dart                      app entry; zh-Hant-TW locale; phone-width frame on wide windows
   l10n/strings.dart              ALL student-facing wording (Traditional Chinese)
-  wireframe/wire.dart            spacing/radius/colour tokens + wireframe widgets
+  wireframe/theme.dart           light / dark palettes, Material theme, mode toggle
+  wireframe/wire.dart            spacing/radius tokens + shared components
   wireframe/ymd_dropdown.dart    年 - 月 - 日 date dropdowns
   utils/format.dart              zh-TW date & duration formatting
   models/                        charging.dart · station.dart · rules.dart · violation.dart

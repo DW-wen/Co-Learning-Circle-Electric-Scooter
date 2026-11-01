@@ -1,0 +1,71 @@
+# Builds BOTH Flutter web apps and publishes them as ONE GitHub Pages site:
+#   https://<owner>.github.io/<repo>/          -> landing page (pages/index.html)
+#   https://<owner>.github.io/<repo>/user/     -> user_app    (students)
+#   https://<owner>.github.io/<repo>/manager/  -> manager_app (campus security)
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # lets you re-run it manually from the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; never cancel one that is already publishing.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  # README says the apps were checked against 3.29.3.
+  FLUTTER_VERSION: 3.29.3
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      # --base-href must start AND end with "/" and match the sub-folder the
+      # app is served from, otherwise main.dart.js / assets 404.
+      - name: Build user_app
+        working-directory: user_app
+        run: |
+          flutter pub get
+          flutter build web --release --base-href "/${{ github.event.repository.name }}/user/"
+
+      - name: Build manager_app
+        working-directory: manager_app
+        run: |
+          flutter pub get
+          flutter build web --release --base-href "/${{ github.event.repository.name }}/manager/"
+
+      - name: Assemble site
+        run: |
+          mkdir site
+          cp -r user_app/build/web    site/user
+          cp -r manager_app/build/web site/manager
+          cp pages/index.html         site/index.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

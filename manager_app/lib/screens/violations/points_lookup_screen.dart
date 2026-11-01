@@ -55,7 +55,7 @@ class _PointsLookupScreenState extends State<PointsLookupScreen> {
         // ------------------------------------------------------------ master
         // Material (not a coloured Container) so ListTile selection shows.
         Material(
-          color: Colors.white,
+          color: Wf.surface,
           child: SizedBox(
           width: 360,
           child: Column(
@@ -73,16 +73,16 @@ class _PointsLookupScreenState extends State<PointsLookupScreen> {
               const Divider(height: 1),
               Expanded(
                 child: students.isEmpty
-                    ? const Center(
+                    ? Center(
                         child: Text(S.noStudents, style: Tx.muted))
                     : ListView(
                         children: [
                           for (final s in students)
                             ListTile(
                               selected: s.id == _selectedId,
-                              selectedTileColor: Wf.info.withAlpha(18),
+                              selectedTileColor: Wf.tint(Wf.primary),
                               leading: _c.activeBan(s.id, now) != null
-                                  ? const Icon(Icons.block, color: Wf.bad)
+                                  ? Icon(Icons.block, color: Wf.bad)
                                   : const Icon(Icons.person_outline),
                               title: Text(s.name),
                               subtitle: Text(s.id),
@@ -137,7 +137,7 @@ class _PointsLookupScreenState extends State<PointsLookupScreen> {
               ),
             ),
             ban == null
-                ? const StatusBadge(S.serviceAllowed,
+                ? StatusBadge(S.serviceAllowed,
                     color: Wf.ok, icon: Icons.check_circle_outline)
                 : StatusBadge(S.bannedUntil(fmtDateTime(ban.until)),
                     color: Wf.bad, icon: Icons.block),
@@ -182,7 +182,7 @@ class _PointsLookupScreenState extends State<PointsLookupScreen> {
           ],
         ),
         const SizedBox(height: Sp.x2),
-        const Text(S.rulesTbd, style: Tx.small),
+        Text(S.rulesTbd, style: Tx.small),
         const SizedBox(height: Sp.x4),
         if (records.isEmpty)
           const WirePlaceholder(
@@ -190,7 +190,7 @@ class _PointsLookupScreenState extends State<PointsLookupScreen> {
         else
           TableCard(
             table: DataTable(
-              headingRowColor: const WidgetStatePropertyAll(Wf.bg),
+              headingRowColor: WidgetStatePropertyAll(Wf.bg),
               columns: const [
                 DataColumn(label: Text(S.colRecordedAt)),
                 DataColumn(label: Text(S.colPoints), numeric: true),

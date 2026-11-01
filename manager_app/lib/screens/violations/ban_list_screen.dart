@@ -82,7 +82,7 @@ class _BanListScreenState extends State<BanListScreen> {
         else
           TableCard(
             table: DataTable(
-              headingRowColor: const WidgetStatePropertyAll(Wf.bg),
+              headingRowColor: WidgetStatePropertyAll(Wf.bg),
               columns: const [
                 DataColumn(label: Text(S.colStudentId)),
                 DataColumn(label: Text(S.colName)),

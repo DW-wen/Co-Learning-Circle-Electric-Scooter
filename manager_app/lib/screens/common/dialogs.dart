@@ -100,7 +100,7 @@ class _RecordPointsDialogState extends State<_RecordPointsDialog> {
             KeyValue(S.colStudentId, widget.student.id),
             KeyValue(S.location, widget.location),
             const SizedBox(height: Sp.x3),
-            const Text(S.reason, style: Tx.label),
+            Text(S.reason, style: Tx.label),
             const SizedBox(height: Sp.x2),
             Wrap(
               spacing: Sp.x2,
@@ -117,7 +117,7 @@ class _RecordPointsDialogState extends State<_RecordPointsDialog> {
             const SizedBox(height: Sp.x4),
             Row(
               children: [
-                const Text(S.points, style: Tx.label),
+                Text(S.points, style: Tx.label),
                 const Spacer(),
                 IconButton.outlined(
                   onPressed:
@@ -200,7 +200,7 @@ class _BanDialogState extends State<_BanDialog> {
             KeyValue(S.colStudentId, widget.student.id),
             const KeyValue(S.banReason, S.banReasonDefault),
             const SizedBox(height: Sp.x3),
-            const Text(S.banLength, style: Tx.label),
+            Text(S.banLength, style: Tx.label),
             const SizedBox(height: Sp.x2),
             Wrap(
               spacing: Sp.x2,
@@ -268,7 +268,6 @@ class _ResolutionDialogState extends State<_ResolutionDialog> {
           decoration: const InputDecoration(
             labelText: S.resolutionLabel,
             hintText: S.resolutionHint,
-            border: OutlineInputBorder(),
             alignLabelWithHint: true,
           ),
         ),

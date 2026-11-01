@@ -22,27 +22,28 @@ class UserApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: S.appTitle,
-      debugShowCheckedModeBanner: false,
-      locale: zhTW,
-      supportedLocales: const [zhTW],
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.blueGrey,
-        scaffoldBackgroundColor: Wf.bg,
-      ),
-      builder: (context, child) => ColoredBox(
-        color: Wf.fill,
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: phoneMaxWidth),
-            child: child,
+    return ThemeHost(
+      builder: (context, theme) => MaterialApp(
+        title: S.appTitle,
+        debugShowCheckedModeBanner: false,
+        locale: zhTW,
+        supportedLocales: const [zhTW],
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        theme: theme,
+        // Tokens switch instantly, so skip the theme cross-fade.
+        themeAnimationDuration: Duration.zero,
+        builder: (context, child) => ColoredBox(
+          color: Color.alphaBlend(
+              Wf.text.withAlpha(Wf.isDark ? 40 : 14), Wf.bg),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: phoneMaxWidth),
+              child: child,
+            ),
           ),
         ),
+        home: const HomeShell(),
       ),
-      home: const HomeShell(),
     );
   }
 }

@@ -71,7 +71,7 @@ class _ChargeHistoryTabState extends State<ChargeHistoryTab> {
               ),
               if (_mode == _Mode.date) ...[
                 const SizedBox(height: Sp.x3),
-                const Text(S.dateLabel, style: Tx.small),
+                Text(S.dateLabel, style: Tx.small),
                 const SizedBox(height: Sp.x1),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -135,7 +135,7 @@ class _SessionCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.ev_station, size: 18, color: Wf.muted),
+              Icon(Icons.ev_station, size: 18, color: Wf.muted),
               const SizedBox(width: Sp.x2),
               Expanded(
                 child: Text(

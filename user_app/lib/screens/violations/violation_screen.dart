@@ -39,7 +39,10 @@ class _ViolationScreenState extends State<ViolationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(S.violationsTitle)),
+      appBar: AppBar(
+        title: const Text(S.violationsTitle),
+        actions: const [ThemeToggleButton()],
+      ),
       body: ListenableBuilder(
         listenable: widget.controller,
         builder: (context, _) => _body(widget.controller.standing),
@@ -129,9 +132,9 @@ class _StandingCard extends StatelessWidget {
     return WireCard(
       title: S.currentStanding,
       trailing: standing.allowed
-          ? const StatusBadge(S.badgeAllowed,
+          ? StatusBadge(S.badgeAllowed,
               color: Wf.ok, icon: Icons.check_circle_outline)
-          : const StatusBadge(S.badgeRestricted,
+          : StatusBadge(S.badgeRestricted,
               color: Wf.bad, icon: Icons.block),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,7 +152,7 @@ class _StandingCard extends StatelessWidget {
               icon: Icons.flag_outlined,
             ),
             const SizedBox(height: Sp.x1),
-            const Text(S.suspensionThresholdTbd, style: Tx.small),
+            Text(S.suspensionThresholdTbd, style: Tx.small),
           ] else if (until != null) ...[
             BigStat(
               label: S.resumeFrom,
@@ -203,7 +206,7 @@ class _ViolationGroup extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.report_outlined, size: 18, color: Wf.muted),
+                  Icon(Icons.report_outlined, size: 18, color: Wf.muted),
                   const SizedBox(width: Sp.x2),
                   Expanded(
                     child: Column(
@@ -217,7 +220,7 @@ class _ViolationGroup extends StatelessWidget {
                   ),
                   const SizedBox(width: Sp.x2),
                   Text('+${r.points}',
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w700, color: Wf.bad)),
                 ],
               ),
