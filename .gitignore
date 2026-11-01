@@ -177,3 +177,7 @@ htmlcov/
 ._*
 Thumbs.db
 ehthumbs.db
+
+# Flutter apps: re-include Dart sources hidden by the TypeScript `lib/` rule above
+!user_app/lib/
+!manager_app/lib/

@@ -122,7 +122,7 @@ class _StationCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.ev_station, color: Wf.muted),
+              Icon(Icons.ev_station, color: Wf.muted),
               const SizedBox(width: Sp.x2),
               Expanded(
                 child: Column(
@@ -176,7 +176,7 @@ class _SpotChip extends StatelessWidget {
         width: 56,
         padding: const EdgeInsets.symmetric(vertical: Sp.x1),
         decoration: BoxDecoration(
-          color: color.withAlpha(26),
+          color: Wf.tint(color),
           border: Border.all(color: color.withAlpha(140)),
           borderRadius: BorderRadius.circular(Rd.md),
         ),

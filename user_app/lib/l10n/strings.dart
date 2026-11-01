@@ -182,4 +182,8 @@ class S {
   static const String photoPlaceholder = '＋ 附加照片（預留）';
   static const String submitReport = '送出回報';
   static const String reportSent = '已送出回報，駐警隊將盡快處理。';
+
+  // ----------------------------------------------------------- 外觀
+  static const String themeToLight = '切換為淺色模式';
+  static const String themeToDark = '切換為深色模式';
 }

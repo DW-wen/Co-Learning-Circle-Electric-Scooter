@@ -126,11 +126,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
 
   Widget _list(List<Incident> visible, DateTime now) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Wf.border),
-        borderRadius: BorderRadius.circular(Rd.xl),
-      ),
+      decoration: cardDecoration(radius: Rd.xl),
       clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -181,7 +177,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
           const Divider(height: 1),
           Expanded(
             child: visible.isEmpty
-                ? const Center(child: Text(S.noIncidents, style: Tx.muted))
+                ? Center(child: Text(S.noIncidents, style: Tx.muted))
                 // Material so ListTile selection / ink paints above white bg.
                 : Material(
                     type: MaterialType.transparency,
@@ -201,7 +197,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
     final spot = _c.stationById(inc.spotId);
     return ListTile(
       selected: inc.id == _selectedId,
-      selectedTileColor: Wf.info.withAlpha(18),
+      selectedTileColor: Wf.tint(Wf.primary),
       leading: Icon(_sourceIcon(inc.source), color: Wf.muted),
       title: Text(incidentTypeLabel(inc.type), style: Tx.bold),
       subtitle: Text(
@@ -224,11 +220,7 @@ class _IncidentsScreenState extends State<IncidentsScreen> {
         spot != null && spot.status == StationStatus.notCharging;
 
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Wf.border),
-        borderRadius: BorderRadius.circular(Rd.xl),
-      ),
+      decoration: cardDecoration(radius: Rd.xl),
       child: ListView(
         padding: const EdgeInsets.all(Sp.x6),
         children: [

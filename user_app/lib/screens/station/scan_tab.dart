@@ -86,7 +86,7 @@ class _ScanTabState extends State<ScanTab> {
           label: const Text(S.scanQr),
         ),
         const SizedBox(height: Sp.x6),
-        const Row(
+        Row(
           children: [
             Expanded(child: Divider()),
             Padding(
@@ -104,7 +104,6 @@ class _ScanTabState extends State<ScanTab> {
           decoration: const InputDecoration(
             labelText: S.spotIdLabel,
             hintText: S.spotIdHint,
-            border: OutlineInputBorder(),
             prefixIcon: Icon(Icons.tag),
           ),
           onSubmitted: (_) => _submit(),
@@ -137,7 +136,7 @@ class _ScanTabState extends State<ScanTab> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('• ', style: Tx.body),
+            Text('• ', style: Tx.body),
             Expanded(child: Text(text, style: Tx.body)),
           ],
         ),
@@ -162,7 +161,7 @@ class _Banner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: Sp.x3, vertical: Sp.x2),
       decoration: BoxDecoration(
-        color: color.withAlpha(20),
+        color: Wf.tint(color),
         border: Border.all(color: color.withAlpha(100)),
         borderRadius: BorderRadius.circular(Rd.lg),
       ),

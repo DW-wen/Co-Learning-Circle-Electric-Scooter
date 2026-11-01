@@ -64,14 +64,23 @@ class _DashboardShellState extends State<DashboardShell> {
                 leading: Padding(
                   padding: const EdgeInsets.symmetric(vertical: Sp.x4),
                   child: wide
-                      ? const Row(
+                      ? Row(
                           children: [
-                            Icon(Icons.shield_outlined),
+                            Icon(Icons.shield_outlined, color: Wf.primary),
                             SizedBox(width: Sp.x2),
                             Text(S.railTitle, style: Tx.bold),
                           ],
                         )
-                      : const Icon(Icons.shield_outlined),
+                      : Icon(Icons.shield_outlined, color: Wf.primary),
+                ),
+                trailing: const Expanded(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: Sp.x4),
+                      child: ThemeToggleButton(),
+                    ),
+                  ),
                 ),
                 destinations: [
                   for (var i = 0; i < _destinations.length; i++)
@@ -89,7 +98,7 @@ class _DashboardShellState extends State<DashboardShell> {
               );
             },
           ),
-          const VerticalDivider(width: 1),
+          VerticalDivider(width: 1, color: Wf.border),
           Expanded(
             child: IndexedStack(
               index: _index,

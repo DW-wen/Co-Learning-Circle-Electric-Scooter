@@ -59,7 +59,7 @@ class _ReportSheetState extends State<_ReportSheet> {
             const Text(S.reportTitle,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
             const SizedBox(height: Sp.x3),
-            const Text(S.issueType, style: Tx.label),
+            Text(S.issueType, style: Tx.label),
             const SizedBox(height: Sp.x2),
             Wrap(
               spacing: Sp.x2,
@@ -80,7 +80,6 @@ class _ReportSheetState extends State<_ReportSheet> {
               decoration: const InputDecoration(
                 labelText: S.spotIdOptional,
                 hintText: S.spotIdHint,
-                border: OutlineInputBorder(),
                 isDense: true,
               ),
             ),
@@ -90,7 +89,6 @@ class _ReportSheetState extends State<_ReportSheet> {
               maxLines: 3,
               decoration: const InputDecoration(
                 labelText: S.noteOptional,
-                border: OutlineInputBorder(),
                 alignLabelWithHint: true,
               ),
             ),

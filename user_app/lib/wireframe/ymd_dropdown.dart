@@ -100,7 +100,7 @@ class YmdDropdown extends StatelessWidget {
                   children: [
                     Text(label(i), style: Tx.bold),
                     if (isMarked != null && isMarked(i))
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(left: Sp.x1),
                         child: Icon(Icons.circle, size: 6, color: Wf.info),
                       ),
@@ -121,7 +121,7 @@ class _Dash extends StatelessWidget {
   const _Dash();
 
   @override
-  Widget build(BuildContext context) => const Padding(
+  Widget build(BuildContext context) => Padding(
         padding: EdgeInsets.symmetric(horizontal: Sp.x2),
         child: Text('-', style: Tx.bold),
       );

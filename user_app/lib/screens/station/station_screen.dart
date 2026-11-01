@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../l10n/strings.dart';
 import '../../models/station.dart';
 import '../../state/charging_controller.dart';
+import '../../wireframe/wire.dart';
 import '../common/report_issue_sheet.dart';
 import 'charge_history_tab.dart';
 import 'nearby_stations_tab.dart';
@@ -89,6 +90,7 @@ class _StationScreenState extends State<StationScreen>
       appBar: AppBar(
         title: const Text(S.stationTitle),
         actions: [
+          const ThemeToggleButton(),
           IconButton(
             tooltip: S.report,
             icon: const Icon(Icons.report_problem_outlined),

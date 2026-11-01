@@ -63,7 +63,7 @@ class _StationsScreenState extends State<StationsScreen> {
       byZone.putIfAbsent(s.zone, () => []).add(s);
     }
 
-    Widget kpi(String label, String value, {Color color = Wf.text, IconData? icon}) =>
+    Widget kpi(String label, String value, {Color? color, IconData? icon}) =>
         Expanded(
           child: StatTile(label: label, value: value, color: color, icon: icon),
         );
@@ -98,7 +98,7 @@ class _StationsScreenState extends State<StationsScreen> {
           runSpacing: Sp.x2,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            const Text(S.filter, style: Tx.muted),
+            Text(S.filter, style: Tx.muted),
             ChoiceChip(
               label: const Text(S.all),
               selected: _statusFilter == null,
@@ -130,7 +130,7 @@ class _StationsScreenState extends State<StationsScreen> {
             padding: const EdgeInsets.only(bottom: Sp.x2),
             child: Row(
               children: [
-                const Icon(Icons.place_outlined, size: 18, color: Wf.muted),
+                Icon(Icons.place_outlined, size: 18, color: Wf.muted),
                 const SizedBox(width: Sp.x1),
                 Text(e.key, style: Tx.label),
                 const SizedBox(width: Sp.x2),
@@ -253,7 +253,7 @@ class _Stepper extends StatelessWidget {
           children: [
             Text(label, style: Tx.body),
             if (note != null)
-              Text(note!, style: const TextStyle(fontSize: 11, color: Wf.warn)),
+              Text(note!, style: TextStyle(fontSize: 11, color: Wf.warn)),
           ],
         ),
         const SizedBox(width: Sp.x3),
@@ -312,13 +312,14 @@ class _SpotTile extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.fromLTRB(Sp.x3, Sp.x2, Sp.x1, Sp.x3),
-      decoration: BoxDecoration(
-        color: station.status == StationStatus.offline
-            ? Wf.bg
-            : Colors.white,
-        border: Border.all(
-            color: borderColor, width: level == AlertLevel.none ? 1 : 2),
-        borderRadius: BorderRadius.circular(Rd.lg),
+      decoration: cardDecoration(
+        radius: Rd.lg + 2,
+        color: station.status == StationStatus.offline ? Wf.fill : null,
+      ).copyWith(
+        // alert outline replaces the hairline border
+        border: level == AlertLevel.none
+            ? null
+            : Border.all(color: borderColor, width: 2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,7 +341,7 @@ class _SpotTile extends StatelessWidget {
             _line(
               Icons.person_outline,
               user == null ? S.noUser : '${user.id} · ${user.name}',
-              color: user == null ? Wf.muted : Wf.text,
+              color: user == null ? Wf.muted : null,
             ),
           if (since != null) _line(Icons.schedule, _sinceText(since)),
           if (level != AlertLevel.none && since != null && limit != null) ...[
@@ -390,16 +391,17 @@ class _SpotTile extends StatelessWidget {
     );
   }
 
-  Widget _line(IconData icon, String text, {Color color = Wf.text}) {
+  Widget _line(IconData icon, String text, {Color? color}) {
+    final c = color ?? Wf.text;
     return Padding(
       padding: const EdgeInsets.only(top: 2, right: Sp.x2),
       child: Row(
         children: [
-          Icon(icon, size: 16, color: color == Wf.text ? Wf.muted : color),
+          Icon(icon, size: 16, color: color == null ? Wf.muted : c),
           const SizedBox(width: Sp.x1),
           Expanded(
             child: Text(text,
-                style: TextStyle(fontSize: 13, color: color),
+                style: TextStyle(fontSize: 13, color: c),
                 overflow: TextOverflow.ellipsis),
           ),
         ],
@@ -419,7 +421,7 @@ class _SpotTile extends StatelessWidget {
       margin: const EdgeInsets.only(right: Sp.x2),
       padding: const EdgeInsets.symmetric(horizontal: Sp.x2, vertical: Sp.x1),
       decoration: BoxDecoration(
-        color: color.withAlpha(22),
+        color: Wf.tint(color),
         borderRadius: BorderRadius.circular(Rd.md),
       ),
       child: Row(

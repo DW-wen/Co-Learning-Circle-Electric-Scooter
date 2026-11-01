@@ -1,14 +1,15 @@
-// Wireframe kit for the Student app.
-//
-// Layout-review stage: everything here is intentionally plain (greys + one
-// accent per semantic state). The token classes (Sp / Rd / Wf / Tx) are the
-// single place to change when we move on to visual refinement.
+// Shared UI kit for the Student app: spacing / radius scales and the small
+// set of building blocks every screen uses. Colours and text styles come
+// from theme.dart (light / dark palettes) and are re-exported here.
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 
 import '../l10n/strings.dart';
+import 'theme.dart';
+
+export 'theme.dart';
 
 /// Tailwind-like spacing scale (1 unit = 4 logical px): p-1, p-2, p-3 ...
 class Sp {
@@ -24,41 +25,30 @@ class Sp {
 /// Border radius scale: rounded-md / rounded-lg / rounded-xl.
 class Rd {
   Rd._();
-  static const double md = 6;
-  static const double lg = 8;
-  static const double xl = 12;
+  static const double md = 8;
+  static const double lg = 12;
+  static const double xl = 18;
 }
 
-/// Wireframe palette (Tailwind gray-* plus semantic accents).
-class Wf {
-  Wf._();
-  static const Color bg = Color(0xFFF3F4F6); // gray-100
-  static const Color fill = Color(0xFFE5E7EB); // gray-200
-  static const Color border = Color(0xFFD1D5DB); // gray-300
-  static const Color muted = Color(0xFF6B7280); // gray-500
-  static const Color text = Color(0xFF111827); // gray-900
-  static const Color ok = Color(0xFF16A34A); // green-600
-  static const Color warn = Color(0xFFD97706); // amber-600
-  static const Color bad = Color(0xFFDC2626); // red-600
-  static const Color info = Color(0xFF2563EB); // blue-600
-}
+/// Card surface used across the app: paper with a soft shadow (light) or a
+/// hairline border (dark).
+BoxDecoration cardDecoration({double radius = Rd.xl, Color? color}) =>
+    BoxDecoration(
+      color: color ?? Wf.surface,
+      borderRadius: BorderRadius.circular(radius),
+      border: Border.all(
+          color: Wf.isDark ? Wf.border : Wf.border.withAlpha(150)),
+      boxShadow: Wf.isDark
+          ? null
+          : [
+              BoxShadow(
+                  color: Wf.shadow,
+                  blurRadius: 18,
+                  offset: const Offset(0, 6)),
+            ],
+    );
 
-/// Text styles.
-class Tx {
-  Tx._();
-  static const TextStyle label = TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.w600,
-      color: Wf.muted,
-      letterSpacing: 0.4);
-  static const TextStyle muted = TextStyle(fontSize: 13, color: Wf.muted);
-  static const TextStyle small = TextStyle(fontSize: 12, color: Wf.muted);
-  static const TextStyle body = TextStyle(fontSize: 14, color: Wf.text);
-  static const TextStyle bold =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Wf.text);
-}
-
-/// Bordered white card with an optional uppercase title and trailing widget.
+/// Card with an optional small title and trailing widget.
 class WireCard extends StatelessWidget {
   const WireCard({
     super.key,
@@ -78,11 +68,7 @@ class WireCard extends StatelessWidget {
     final hasHeader = title != null || trailing != null;
     return Container(
       padding: padding,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Wf.border),
-        borderRadius: BorderRadius.circular(Rd.xl),
-      ),
+      decoration: cardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -103,7 +89,7 @@ class WireCard extends StatelessWidget {
   }
 }
 
-/// Grey box standing in for content that is not built yet (map, camera...).
+/// Inset area standing in for content that is not built yet (map, camera…).
 /// Pass [height] = null to fill the parent's constraints.
 class WirePlaceholder extends StatelessWidget {
   const WirePlaceholder({
@@ -126,19 +112,29 @@ class WirePlaceholder extends StatelessWidget {
     return Container(
       height: height,
       decoration: BoxDecoration(
-        color: Wf.fill,
-        border: Border.all(color: Wf.border),
+        color: Wf.fill.withAlpha(Wf.isDark ? 150 : 170),
         borderRadius: BorderRadius.circular(Rd.lg),
       ),
+      clipBehavior: Clip.antiAlias,
       child: Stack(
         children: [
+          Positioned.fill(
+            child: CustomPaint(painter: _DotGridPainter(Wf.border)),
+          ),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(Sp.x3),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(icon, color: Wf.muted, size: 28),
+                  Container(
+                    padding: const EdgeInsets.all(Sp.x2),
+                    decoration: BoxDecoration(
+                      color: Wf.surface,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(icon, color: Wf.muted, size: 22),
+                  ),
                   const SizedBox(height: Sp.x2),
                   Text(label, style: Tx.small, textAlign: TextAlign.center),
                 ],
@@ -152,33 +148,56 @@ class WirePlaceholder extends StatelessWidget {
   }
 }
 
-/// Pill-shaped status badge.
+/// Faint dot grid for placeholders (reads as "map / canvas").
+class _DotGridPainter extends CustomPainter {
+  _DotGridPainter(this.color);
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = color;
+    const step = 18.0;
+    for (var y = step / 2; y < size.height; y += step) {
+      for (var x = step / 2; x < size.width; x += step) {
+        canvas.drawCircle(Offset(x, y), 1, paint);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(_DotGridPainter old) => old.color != color;
+}
+
+/// Pill-shaped status badge on a soft tint.
 class StatusBadge extends StatelessWidget {
-  const StatusBadge(this.label, {super.key, this.color = Wf.muted, this.icon});
+  const StatusBadge(this.label, {super.key, this.color, this.icon});
 
   final String label;
-  final Color color;
+
+  /// Defaults to the muted text colour.
+  final Color? color;
   final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
+    final c = color ?? Wf.muted;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: Sp.x2, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       decoration: BoxDecoration(
-        color: color.withAlpha(28),
+        color: Wf.tint(c),
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: color.withAlpha(90)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) ...[
-            Icon(icon, size: 14, color: color),
+            Icon(icon, size: 14, color: c),
             const SizedBox(width: Sp.x1),
           ],
           Text(label,
               style: TextStyle(
-                  color: color, fontSize: 12, fontWeight: FontWeight.w600)),
+                  color: c, fontSize: 12, fontWeight: FontWeight.w700)),
         ],
       ),
     );
@@ -196,7 +215,7 @@ class KeyValue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: Sp.x1),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -219,13 +238,15 @@ class BigStat extends StatelessWidget {
     required this.label,
     required this.value,
     this.icon,
-    this.color = Wf.text,
+    this.color,
   });
 
   final String label;
   final String value;
   final IconData? icon;
-  final Color color;
+
+  /// Defaults to the main text colour.
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -236,23 +257,21 @@ class BigStat extends StatelessWidget {
         Row(
           children: [
             if (icon != null) ...[
-              Icon(icon, size: 16, color: Wf.muted),
+              Icon(icon, size: 15, color: Wf.muted),
               const SizedBox(width: Sp.x1),
             ],
             Flexible(child: Text(label, style: Tx.small)),
           ],
         ),
         const SizedBox(height: Sp.x1),
-        Text(value,
-            style: TextStyle(
-                fontSize: 24, fontWeight: FontWeight.w700, color: color)),
+        Text(value, style: Tx.number(26, color ?? Wf.text)),
       ],
     );
   }
 }
 
 /// DEV-ONLY strip that lets a reviewer flip a screen between its states
-/// (e.g. Charging / Finished / Not charging) without a backend.
+/// (e.g. 充電中 / 充電完成 / 未充電) without a backend.
 /// Remove once real data is wired in.
 class PreviewSwitcher<T> extends StatelessWidget {
   const PreviewSwitcher({
@@ -269,18 +288,17 @@ class PreviewSwitcher<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(Sp.x2),
+      padding: const EdgeInsets.symmetric(horizontal: Sp.x3, vertical: Sp.x2),
       decoration: BoxDecoration(
-        color: Wf.warn.withAlpha(18),
-        border: Border.all(color: Wf.warn.withAlpha(110)),
         borderRadius: BorderRadius.circular(Rd.lg),
+        border: Border.all(color: Wf.border),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 6),
-            child: Icon(Icons.science_outlined, size: 16, color: Wf.warn),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Icon(Icons.science_outlined, size: 16, color: Wf.muted),
           ),
           const SizedBox(width: Sp.x2),
           Expanded(
@@ -289,8 +307,7 @@ class PreviewSwitcher<T> extends StatelessWidget {
               runSpacing: 6,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                const Text(S.previewState,
-                    style: TextStyle(fontSize: 12, color: Wf.warn)),
+                Text(S.previewState, style: Tx.small),
                 for (final e in options.entries)
                   ChoiceChip(
                     label: Text(e.value),
@@ -350,13 +367,15 @@ class MapPin {
   const MapPin({
     required this.x,
     required this.y,
-    this.color = Wf.info,
+    this.color,
     this.label,
   });
 
   final double x;
   final double y;
-  final Color color;
+
+  /// Defaults to the accent colour.
+  final Color? color;
   final String? label;
 }
 
@@ -384,7 +403,7 @@ class MapPins extends StatelessWidget {
                 height: z.height * h,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Wf.ok.withAlpha(25),
+                    color: Wf.tint(Wf.ok),
                     border: Border.all(color: Wf.ok.withAlpha(140)),
                     borderRadius: BorderRadius.circular(Rd.md),
                   ),
@@ -392,9 +411,9 @@ class MapPins extends StatelessWidget {
               ),
             for (final p in pins)
               Positioned(
-                left: p.x * w - 11,
-                top: p.y * h - 22,
-                child: _pinIcon(p),
+                left: p.x * w - 9,
+                top: p.y * h - 9,
+                child: _pin(p),
               ),
           ],
         );
@@ -402,9 +421,21 @@ class MapPins extends StatelessWidget {
     );
   }
 
-  Widget _pinIcon(MapPin p) {
-    final icon = Icon(Icons.location_on, color: p.color, size: 22);
+  Widget _pin(MapPin p) {
+    final c = p.color ?? Wf.primary;
+    final dot = Container(
+      width: 18,
+      height: 18,
+      decoration: BoxDecoration(
+        color: c,
+        shape: BoxShape.circle,
+        border: Border.all(color: Wf.surface, width: 3),
+        boxShadow: [
+          BoxShadow(color: c.withAlpha(90), blurRadius: 8),
+        ],
+      ),
+    );
     final label = p.label;
-    return label == null ? icon : Tooltip(message: label, child: icon);
+    return label == null ? dot : Tooltip(message: label, child: dot);
   }
 }

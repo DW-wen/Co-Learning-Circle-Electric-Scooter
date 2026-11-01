@@ -1,13 +1,14 @@
 # manager_app — 駐警隊充電站監控台 (desktop, 繁體中文)
 
-Wireframe stage. See the root `README.md` for run instructions and open questions.
+Styled prototype (light + dark). See the root `README.md` for run instructions and open questions.
 
 ```
 lib/
   main.dart                          app entry; zh-Hant-TW locale
   l10n/strings.dart                  ALL dashboard wording (Traditional Chinese)
   l10n/labels.dart                   enum -> label mapping
-  wireframe/wire.dart                tokens + wireframe widgets (PageScaffold, StatTile, TableCard …)
+  wireframe/theme.dart               light / dark palettes, Material theme, mode toggle
+  wireframe/wire.dart                spacing/radius tokens + components (PageScaffold, StatTile, TableCard …)
   wireframe/ymd_dropdown.dart        年 - 月 - 日 date dropdowns
   utils/format.dart                  zh-TW date / duration / "N 分鐘前" formatting
   models/models.dart                 Student, Station (spot), UsageLog, PointRecord, Ban, Incident

@@ -210,4 +210,8 @@ class S {
   static const String spotInUse = '充電位使用中，無法設為維修中';
   static String incidentStarted(String id) => '$id 已開始處理';
   static String incidentResolved(String id) => '$id 已標記為已解決';
+
+  // ----------------------------------------------------------- 外觀
+  static const String themeToLight = '切換為淺色模式';
+  static const String themeToDark = '切換為深色模式';
 }

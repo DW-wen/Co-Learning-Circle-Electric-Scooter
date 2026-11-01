@@ -75,7 +75,10 @@ class _ChargingScreenState extends State<ChargingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(S.chargingTitle)),
+      appBar: AppBar(
+        title: const Text(S.chargingTitle),
+        actions: const [ThemeToggleButton()],
+      ),
       body: ListenableBuilder(
         listenable: _c,
         builder: (context, _) {
@@ -147,7 +150,7 @@ class _ChargingScreenState extends State<ChargingScreen> {
             value: _notifyMove,
             onChanged: (v) => setState(() => _notifyMove = v),
           ),
-          const Text(S.pushTbd, style: Tx.small),
+          Text(S.pushTbd, style: Tx.small),
         ],
       ),
     );
@@ -179,8 +182,8 @@ class _StatusCard extends StatelessWidget {
     return WireCard(
       title: S.currentStatus,
       trailing: charging
-          ? const StatusBadge(S.badgeCharging, color: Wf.info, icon: Icons.bolt)
-          : const StatusBadge(S.badgeFinished,
+          ? StatusBadge(S.badgeCharging, color: Wf.info, icon: Icons.bolt)
+          : StatusBadge(S.badgeFinished,
               color: Wf.ok, icon: Icons.check_circle_outline),
       child: LiveTick(
         builder: (context, now) =>
@@ -210,6 +213,7 @@ class _StatusCard extends StatelessWidget {
                 label: S.elapsed,
                 value: fmtHms(elapsed),
                 icon: Icons.timer_outlined,
+                color: Wf.primary,
               ),
             ),
             Expanded(
@@ -257,6 +261,7 @@ class _StatusCard extends StatelessWidget {
           label: S.elapsedSinceFinished,
           value: fmtHms(since),
           icon: Icons.timer_outlined,
+          color: overdue ? Wf.bad : Wf.primary,
         ),
         const SizedBox(height: Sp.x3),
         Text(S.finishedAt(fmtDateTime(finished)), style: Tx.small),
@@ -264,7 +269,7 @@ class _StatusCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(Sp.x2),
           decoration: BoxDecoration(
-            color: color.withAlpha(20),
+            color: Wf.tint(color),
             borderRadius: BorderRadius.circular(Rd.md),
           ),
           child: Row(
@@ -335,9 +340,9 @@ class _LastChargeCard extends StatelessWidget {
     final s = session;
     return WireCard(
       title: S.lastSuccessfulCharge,
-      trailing: const Icon(Icons.history, size: 18, color: Wf.muted),
+      trailing: Icon(Icons.history, size: 18, color: Wf.muted),
       child: s == null
-          ? const Text(S.noChargeYet, style: Tx.muted)
+          ? Text(S.noChargeYet, style: Tx.muted)
           : Column(
               children: [
                 KeyValue(S.completedAt, fmtDateTime(s.finishedAt!)),
